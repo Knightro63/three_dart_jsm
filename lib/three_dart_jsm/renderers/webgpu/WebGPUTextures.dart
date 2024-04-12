@@ -82,10 +82,10 @@ class WebGPUTextures {
       var image = texture.image;
 
       if (image == undefined) {
-        console.warn(
+        Console.warn(
             'THREE.WebGPURenderer: Texture marked for update but image is undefined.');
       } else if (image.complete == false) {
-        console.warn(
+        Console.warn(
             'THREE.WebGPURenderer: Texture marked for update but image is incomplete.');
       } else {
         // texture init
@@ -519,7 +519,7 @@ class WebGPUTextures {
             break;
 
           default:
-            console.error(
+            Console.error(
                 'WebGPURenderer: Unsupported texture type with RGBAFormat.',
                 type);
         }
@@ -541,7 +541,7 @@ class WebGPUTextures {
             break;
 
           default:
-            console.error(
+            Console.error(
                 'WebGPURenderer: Unsupported texture type with RedFormat.',
                 type);
         }
@@ -563,7 +563,7 @@ class WebGPUTextures {
             break;
 
           default:
-            console.error(
+            Console.error(
                 'WebGPURenderer: Unsupported texture type with RGFormat.',
                 type);
         }
@@ -571,7 +571,7 @@ class WebGPUTextures {
         break;
 
       default:
-        console.error('WebGPURenderer: Unsupported texture format.', format);
+        Console.error('WebGPURenderer: Unsupported texture format.', format);
     }
 
     return formatGPU;

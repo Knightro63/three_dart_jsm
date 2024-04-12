@@ -5,7 +5,7 @@ class WebGPUAttributes {
   late GPUDevice device;
 
   WebGPUAttributes(device) {
-    this.buffers = new WeakMap();
+    this.buffers = WeakMap();
     this.device = device;
   }
 
@@ -18,7 +18,7 @@ class WebGPUAttributes {
   remove(attribute) {
     if (attribute is InterleavedBufferAttribute) attribute = attribute.data;
 
-    var data = this.buffers.get(attribute);
+    final data = this.buffers.get(attribute);
 
     if (data != null) {
       data.buffer.destroy();
@@ -30,7 +30,7 @@ class WebGPUAttributes {
   update(attribute, [isIndex = false, usage]) {
     if (attribute is InterleavedBufferAttribute) attribute = attribute.data;
 
-    var data = this.buffers.get(attribute);
+    final data = this.buffers.get(attribute);
 
     if (data == undefined) {
       if (usage == null) {
@@ -55,27 +55,27 @@ class WebGPUAttributes {
   }
 
   Map _createBuffer(attribute, usage) {
-    var array = attribute.array;
-    var size = array.byteLength +
+    final array = attribute.array;
+    final size = array.byteLength +
         ((4 - (array.byteLength % 4)) %
             4); // ensure 4 byte alignment, see #20441
 
-    var buffer = this.device.createBuffer(GPUBufferDescriptor(
+    final buffer = this.device.createBuffer(GPUBufferDescriptor(
         size: size,
         usage: usage | GPUBufferUsage.CopyDst,
         mappedAtCreation: true));
 
     if (array is Float32Array) {
-      var pointer = buffer.getMappedRange(size: array.lengthInBytes);
+      final pointer = buffer.getMappedRange(size: array.lengthInBytes);
       Float32List _list = (pointer.cast<Float>()).asTypedList(array.length);
 
-      for (var i = 0; i < array.length; i++) {
+      for (final i = 0; i < array.length; i++) {
         _list[i] = array[i];
       }
     } else if (array is Uint16Array) {
       Pointer<Int16> p = buffer.getMappedRange(size: array.lengthInBytes).cast();
 
-      for (var i = 0; i < array.len; i++) {
+      for (final i = 0; i < array.len; i++) {
         p[i] = array[i];
       }
     } else {
@@ -91,8 +91,8 @@ class WebGPUAttributes {
   }
 
   _writeBuffer(buffer, attribute) {
-    var array = attribute.array;
-    var updateRange = attribute.updateRange;
+    final array = attribute.array;
+    final updateRange = attribute.updateRange;
 
     if (updateRange.count == -1) {
       // Not using update ranges

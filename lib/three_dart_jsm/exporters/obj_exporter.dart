@@ -119,7 +119,7 @@ class OBJExporter{
 
     // shortcuts
     Float32BufferAttribute? vertices = geometry?.getAttribute( 'position' );
-    final indices = geometry?.getIndex();
+    //final indices = geometry?.getIndex();
 
     // name of the line object
     _output += 'o ' + line.name + '\n';

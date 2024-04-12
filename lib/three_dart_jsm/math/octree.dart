@@ -1,4 +1,5 @@
-part of jsm_math;
+import 'package:three_dart/three_dart.dart';
+import 'capsule.dart';
 
 class OctreeData{
   OctreeData({
@@ -279,7 +280,7 @@ class Octree{
   void fromGraphNode(Object3D group){
     group.updateWorldMatrix(true, true);
     group.traverse((object){
-      if(object.type == 'Mesh'){
+      if(object is Mesh){
         Mesh obj = object;
         late BufferGeometry geometry;
         bool isTemp = false;

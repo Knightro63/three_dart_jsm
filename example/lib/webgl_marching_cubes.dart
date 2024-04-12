@@ -3,9 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_gl/flutter_gl.dart';
+
 import 'package:three_dart/three_dart.dart' as three;
 import 'package:three_dart/three_dart.dart' hide Texture, Color;
 import 'package:three_dart_jsm/three_dart_jsm.dart';
@@ -39,8 +40,8 @@ class EffectController{
   late Function? dummy;
 }
 
-class webgl_marching_cubes extends StatefulWidget {
-  const webgl_marching_cubes({
+class WebglMarchingCubes extends StatefulWidget {
+  const WebglMarchingCubes({
     Key? key,
     required this.fileName
   }) : super(key: key);
@@ -48,10 +49,10 @@ class webgl_marching_cubes extends StatefulWidget {
   final String fileName;
 
   @override
-  _webgl_marching_cubesState createState() => _webgl_marching_cubesState();
+  WebglMarchingCubesState createState() => WebglMarchingCubesState();
 }
 
-class _webgl_marching_cubesState extends State<webgl_marching_cubes> {
+class WebglMarchingCubesState extends State<WebglMarchingCubes> {
   FocusNode node = FocusNode();
   // gl values
   late FlutterGlPlugin three3dRender;
@@ -221,15 +222,15 @@ class _webgl_marching_cubesState extends State<webgl_marching_cubes> {
   }
 
   void render() {
-    final _gl = three3dRender.gl;
+    final gl = three3dRender.gl;
     renderer!.render(scene, camera);
-    _gl.flush();
+    gl.flush();
     if(!kIsWeb) {
       three3dRender.updateTexture(sourceTexture);
     }
   }
   void initRenderer() {
-    Map<String, dynamic> _options = {
+    Map<String, dynamic> options = {
       "width": width,
       "height": height,
       "gl": three3dRender.gl,
@@ -238,10 +239,10 @@ class _webgl_marching_cubesState extends State<webgl_marching_cubes> {
     };
 
     if(!kIsWeb && Platform.isAndroid){
-      _options['logarithmicDepthBuffer'] = true;
+      options['logarithmicDepthBuffer'] = true;
     }
 
-    renderer = WebGLRenderer(_options);
+    renderer = WebGLRenderer(options);
     renderer!.setPixelRatio(dpr);
     renderer!.setSize(width, height, false);
     renderer!.shadowMap.enabled = true;
@@ -268,7 +269,7 @@ class _webgl_marching_cubesState extends State<webgl_marching_cubes> {
 
     three3dRender = FlutterGlPlugin();
 
-    Map<String, dynamic> _options = {
+    Map<String, dynamic> options = {
       "antialias": true,
       "alpha": true,
       "width": width.toInt(),
@@ -276,11 +277,10 @@ class _webgl_marching_cubesState extends State<webgl_marching_cubes> {
       "dpr": dpr,
       'precision': 'highp'
     };
-    await three3dRender.initialize(options: _options);
+    await three3dRender.initialize(options: options);
 
     setState(() {});
 
-    // TODO web wait dom ok!!!
     Future.delayed(const Duration(milliseconds: 100), () async {
       await three3dRender.prepareContext();
       initScene();

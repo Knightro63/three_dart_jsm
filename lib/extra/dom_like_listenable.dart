@@ -197,7 +197,7 @@ class WebPointerEvent {
   List<EventTouch> touches = [];
   List<EventTouch> changedTouches = [];
 
-  WebPointerEvent() {}
+  WebPointerEvent();
 
   static String getPointerType(event) {
     return event.kind == PointerDeviceKind.touch ? 'touch' : 'mouse';
@@ -284,12 +284,12 @@ class WebPointerEvent {
     return convertEvent(context, event);
   }
 
-  preventDefault() {
+  void preventDefault() {
     // TODO
   }
 
   String toString() {
-    return "pointerId: ${pointerId} button: ${button} pointerType: ${pointerType} clientX: ${clientX} clientY: ${clientY} pageX: ${pageX} pageY: ${pageY} ";
+    return "pointerId: $pointerId button: $button pointerType: $pointerType clientX: $clientX clientY: $clientY pageX: $pageX pageY: $pageY ";
   }
 }
 

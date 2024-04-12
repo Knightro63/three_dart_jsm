@@ -1,4 +1,5 @@
-part of jsm_helpers;
+import 'package:flutter_gl/flutter_gl.dart';
+import 'package:three_dart/three_dart.dart';
 
 class SeperateByLooseParts{
   List<BufferGeometry> seperate(BufferGeometry geometry){

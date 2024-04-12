@@ -1,5 +1,5 @@
 // ignore: camel_case_types
-class console {
+class Console {
   static error(String message, [dynamic variables]) {
     _print(message, variables);
   }

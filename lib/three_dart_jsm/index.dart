@@ -10,9 +10,11 @@ export './utils/index.dart';
 export './math/index.dart';
 export './deprecated/index.dart';
 export './helpers/index.dart';
-export './environments/RoomEnvironment.dart';
+export 'environments/room_environment.dart';
 
 export './objects/marching_cubes.dart';
+
+export './renderers/svg/index.dart';
 
 // export './renderers/nodes/index.dart';
 // export './renderers/webgpu/index.dart' hide sign;

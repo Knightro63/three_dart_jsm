@@ -1,4 +1,5 @@
-part of jsm_lines;
+import 'package:three_dart/three_dart.dart';
+import 'line_segments2.dart';
 
 // import { LineSegments2 } from '../lines/LineSegments2.js';
 // import { LineGeometry } from '../lines/LineGeometry.js';
@@ -8,9 +9,8 @@ class Line2 extends LineSegments2 {
   String type = 'Line2';
   bool isLine2 = true;
 
-  Line2(geometry, material) : super(geometry, material) {}
+  Line2([BufferGeometry? geometry, Material? material]) : super(geometry, material) {}
 
   // if ( geometry === undefined ) geometry = new LineGeometry();
   // if ( material === undefined ) material = new LineMaterial( { color: Math.random() * 0xffffff } );
-
 }

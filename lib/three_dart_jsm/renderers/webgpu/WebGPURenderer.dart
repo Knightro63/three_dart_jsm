@@ -646,7 +646,7 @@ class WebGPURenderer {
           }
         }
       } else if (object is LineLoop) {
-        console.error(
+        Console.error(
             'THREE.WebGPURenderer: Objects of type THREE.LineLoop are not supported. Please use THREE.Line or THREE.LineSegments.');
       } else if (object is Mesh || object is Line || object is Points) {
         if (!object.frustumCulled || _frustum.intersectsObject(object)) {

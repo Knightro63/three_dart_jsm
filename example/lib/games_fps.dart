@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_gl/flutter_gl.dart';
-import 'package:three_dart/three_dart.dart' as THREE;
+import 'package:three_dart/three_dart.dart' as three;
 import 'package:three_dart/three_dart.dart' hide Texture, Color;
 import 'package:three_dart_jsm/three_dart_jsm.dart';
 
@@ -32,10 +31,10 @@ class TestGame extends StatefulWidget {
   final String fileName;
 
   @override
-  _TestGamePageState createState() => _TestGamePageState();
+  TestGamePageState createState() => TestGamePageState();
 }
 
-class _TestGamePageState extends State<TestGame> {
+class TestGamePageState extends State<TestGame> {
   FocusNode node = FocusNode();
   late FirstPersonControls fpsControl;
   // gl values
@@ -132,7 +131,7 @@ class _TestGamePageState extends State<TestGame> {
   }
   Future<void> initPage() async {
     scene = Scene();
-    scene.background = THREE.Color(0x88ccee);
+    scene.background = three.Color(0x88ccee);
 
     camera = PerspectiveCamera(70, width / height, 0.1, 1000);
     camera.rotation.order = 'YXZ';
@@ -169,12 +168,12 @@ class _TestGamePageState extends State<TestGame> {
       scene.add(helper);
 
       object.traverse((child){
-        if(child.type == 'Mesh'){
-          Mesh part = child;
+        //if(child.type == 'Mesh'){
+          Object3D part = child;
           part.castShadow = true;
           part.visible = true;
           part.receiveShadow = true;
-        }
+        //}
       });
     });
 
@@ -194,15 +193,15 @@ class _TestGamePageState extends State<TestGame> {
     animationReady = true;
   }
   void render() {
-    final _gl = three3dRender.gl;
+    final gl = three3dRender.gl;
     renderer!.render(scene, camera);
-    _gl.flush();
+    gl.flush();
     if(!kIsWeb) {
       three3dRender.updateTexture(sourceTexture);
     }
   }
   void initRenderer() {
-    Map<String, dynamic> _options = {
+    Map<String, dynamic> options = {
       "width": width,
       "height": height,
       "gl": three3dRender.gl,
@@ -211,10 +210,10 @@ class _TestGamePageState extends State<TestGame> {
     };
 
     if(!kIsWeb && Platform.isAndroid){
-      _options['logarithmicDepthBuffer'] = true;
+      options['logarithmicDepthBuffer'] = true;
     }
 
-    renderer = WebGLRenderer(_options);
+    renderer = WebGLRenderer(options);
     renderer!.setPixelRatio(dpr);
     renderer!.setSize(width, height, false);
     renderer!.shadowMap.enabled = true;
@@ -241,7 +240,7 @@ class _TestGamePageState extends State<TestGame> {
 
     three3dRender = FlutterGlPlugin();
 
-    Map<String, dynamic> _options = {
+    Map<String, dynamic> options = {
       "antialias": true,
       "alpha": true,
       "width": width.toInt(),
@@ -249,11 +248,10 @@ class _TestGamePageState extends State<TestGame> {
       "dpr": dpr,
       'precision': 'highp'
     };
-    await three3dRender.initialize(options: _options);
+    await three3dRender.initialize(options: options);
 
     setState(() {});
 
-    // TODO web wait dom ok!!!
     Future.delayed(const Duration(milliseconds: 100), () async {
       await three3dRender.prepareContext();
       initScene();
@@ -262,7 +260,7 @@ class _TestGamePageState extends State<TestGame> {
 
   void throwBall() {
     double sphereRadius = 0.2;
-    THREE.IcosahedronGeometry sphereGeometry = THREE.IcosahedronGeometry( sphereRadius, 5 );
+    three.IcosahedronGeometry sphereGeometry = three.IcosahedronGeometry( sphereRadius, 5 );
     MeshLambertMaterial sphereMaterial = MeshLambertMaterial({'color': 0xbbbb44});
 
     final Mesh newsphere = Mesh( sphereGeometry, sphereMaterial );

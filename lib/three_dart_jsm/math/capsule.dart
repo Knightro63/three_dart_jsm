@@ -1,4 +1,4 @@
-part of jsm_math;
+import 'package:three_dart/three_dart.dart';
 
 class Capsule{
 	Capsule([

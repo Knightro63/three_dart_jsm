@@ -4,19 +4,17 @@ class Node {
   late String uuid;
   String? nodeType;
   late NodeUpdateType updateType;
-  late dynamic inputType;
+  late String inputType;
 
   dynamic xyz;
   dynamic w;
 
-
   late bool constant;
-
   late int generateLength;
 
   dynamic value;
 
-  Node([nodeType = null]) {
+  Node([String? nodeType = null]) {
     this.nodeType = nodeType;
 
     this.updateType = NodeUpdateType.None;
@@ -24,50 +22,48 @@ class Node {
     this.uuid = MathUtils.generateUUID();
   }
 
-  get type {
+  String get type {
     return this.runtimeType.toString();
   }
 
-  getHash([builder]) {
+  String getHash([NodeBuilder? builder]) {
     return this.uuid;
   }
 
-  getUpdateType([builder]) {
+  NodeUpdateType getUpdateType([NodeBuilder? builder]) {
     return this.updateType;
   }
 
-  getNodeType([builder, output]) {
+  String? getNodeType([NodeBuilder? builder, output]) {
     return this.nodeType;
   }
 
-  update([frame]) {
-    console.warn('Abstract function.');
+  void update([frame]) {
+    Console.warn('Abstract function.');
   }
 
-  generate([builder, output]) {
-    console.warn('Abstract function.');
+  String? generate([NodeBuilder? builder, output]) {
+    throw('Abstract function.');
   }
 
-  build(NodeBuilder builder, [output = null]) {
-    var hash = this.getHash(builder);
-    var sharedNode = builder.getNodeFromHash(hash);
+  String? build([NodeBuilder? builder, output = null]) {
+    final hash = this.getHash(builder);
+    final sharedNode = builder?.getNodeFromHash(hash);
 
     if (sharedNode != undefined && this != sharedNode) {
-      return sharedNode.build(builder, output);
+      return sharedNode?.build(builder, output);
     }
 
-    builder.addNode(this);
-    builder.addStack(this);
+    builder?.addNode(this);
+    builder?.addStack(this);
 
-    // generate 函数的参数长度？
-    // dart不支持
-    var isGenerateOnce = (this.generateLength == 1);
+    final isGenerateOnce = (this.generateLength == 1);
 
-    var snippet = null;
+    String? snippet;
 
     if (isGenerateOnce) {
-      var type = this.getNodeType(builder);
-      var nodeData = builder.getDataFromNode(this);
+      final type = this.getNodeType(builder);
+      final nodeData = builder?.getDataFromNode(this);
 
       snippet = nodeData["snippet"];
 
@@ -77,12 +73,12 @@ class Node {
         nodeData["snippet"] = snippet;
       }
 
-      snippet = builder.format(snippet, type, output);
+      snippet = builder?.format(snippet, type, output);
     } else {
       snippet = this.generate(builder, output) ?? '';
     }
 
-    builder.removeStack(this);
+    builder?.removeStack(this);
 
     return snippet;
   }
@@ -93,6 +89,5 @@ class Node {
     } else {
       throw("Node ${this} getProperty name: ${name} is not support  ");
     }
-    
   }
 }

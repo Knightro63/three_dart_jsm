@@ -1,28 +1,25 @@
 import 'dart:async';
 
-import 'dart:typed_data';
-
-import 'dart:ui' as ui;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gl/flutter_gl.dart';
 
-import 'package:three_dart/three_dart.dart' as THREE;
-import 'package:three_dart_jsm/three_dart_jsm.dart' as THREE_JSM;
+import 'package:three_dart/three_dart.dart' as three;
+import 'package:three_dart_jsm/three_dart_jsm.dart' as three_jsm;
 
-class webgl_loader_fbx extends StatefulWidget {
-  String fileName;
-  webgl_loader_fbx({Key? key, required this.fileName}) : super(key: key);
+class WebglLoaderFbx extends StatefulWidget {
+  final String fileName;
+  const WebglLoaderFbx({Key? key, required this.fileName}) : super(key: key);
 
-  _MyAppState createState() => _MyAppState();
+  @override
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<webgl_loader_fbx> {
+class MyAppState extends State<WebglLoaderFbx> {
   late FlutterGlPlugin three3dRender;
-  THREE.WebGLRenderer? renderer;
+  three.WebGLRenderer? renderer;
 
   int? fboId;
   late double width;
@@ -30,29 +27,29 @@ class _MyAppState extends State<webgl_loader_fbx> {
 
   Size? screenSize;
 
-  late THREE.Scene scene;
-  late THREE.Camera camera;
-  late THREE.Mesh mesh;
+  late three.Scene scene;
+  late three.Camera camera;
+  late three.Mesh mesh;
 
   double dpr = 1.0;
 
-  var AMOUNT = 4;
+  int amount = 4;
 
   bool verbose = true;
   bool disposed = false;
 
-  THREE.Clock clock = THREE.Clock();
+  three.Clock clock = three.Clock();
 
-  THREE.AnimationMixer? mixer;
+  three.AnimationMixer? mixer;
 
-  late THREE.WebGLRenderTarget renderTarget;
+  late three.WebGLRenderTarget renderTarget;
 
-  dynamic? sourceTexture;
+  dynamic sourceTexture;
 
-  final GlobalKey<THREE_JSM.DomLikeListenableState> _globalKey =
-      GlobalKey<THREE_JSM.DomLikeListenableState>();
+  final GlobalKey<three_jsm.DomLikeListenableState> _globalKey =
+      GlobalKey<three_jsm.DomLikeListenableState>();
 
-  late THREE_JSM.OrbitControls controls;
+  late three_jsm.OrbitControls controls;
 
   @override
   void initState() {
@@ -66,7 +63,7 @@ class _MyAppState extends State<webgl_loader_fbx> {
 
     three3dRender = FlutterGlPlugin();
 
-    Map<String, dynamic> _options = {
+    Map<String, dynamic> options = {
       "antialias": true,
       "alpha": false,
       "width": width.toInt(),
@@ -74,19 +71,18 @@ class _MyAppState extends State<webgl_loader_fbx> {
       "dpr": dpr
     };
 
-    await three3dRender.initialize(options: _options);
+    await three3dRender.initialize(options: options);
 
     setState(() {});
 
-    // TODO web wait dom ok!!!
-    Future.delayed(Duration(milliseconds: 100), () async {
+    Future.delayed(const Duration(milliseconds: 100), () async {
       await three3dRender.prepareContext();
 
       initScene();
     });
   }
 
-  initSize(BuildContext context) {
+  void initSize(BuildContext context) {
     if (screenSize != null) {
       return;
     }
@@ -112,7 +108,7 @@ class _MyAppState extends State<webgl_loader_fbx> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Text("render"),
+        child: const Text("render"),
         onPressed: () {
           render();
         },
@@ -123,10 +119,10 @@ class _MyAppState extends State<webgl_loader_fbx> {
   Widget _build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           child: Stack(
             children: [
-              THREE_JSM.DomLikeListenable(
+              three_jsm.DomLikeListenable(
                   key: _globalKey,
                   builder: (BuildContext context) {
                     return Container(
@@ -154,62 +150,57 @@ class _MyAppState extends State<webgl_loader_fbx> {
     );
   }
 
-  render() {
-    int _t = DateTime.now().millisecondsSinceEpoch;
-    final _gl = three3dRender.gl;
+  void render() {
+    int t = DateTime.now().millisecondsSinceEpoch;
+    final gl = three3dRender.gl;
 
     if(mixer == null) {
       return;
     }
 
-    var delta = clock.getDelta();
+    final delta = clock.getDelta();
 
     mixer!.update(delta);
 
     renderer!.render(scene, camera);
 
-    int _t1 = DateTime.now().millisecondsSinceEpoch;
+    int t1 = DateTime.now().millisecondsSinceEpoch;
 
     if (verbose) {
-      print("render cost: ${_t1 - _t} ");
+      print("render cost: ${t1 - t} ");
       print(renderer!.info.memory);
       print(renderer!.info.render);
     }
 
-    // 重要 更新纹理之前一定要调用 确保gl程序执行完毕
-    _gl.flush();
+    gl.flush();
 
-    // var pixels = _gl.readCurrentPixels(0, 0, 10, 10);
-    // print(" --------------pixels............. ");
-    // print(pixels);
-
-    if (verbose) print(" render: sourceTexture: ${sourceTexture} ");
+    if (verbose) print(" render: sourceTexture: $sourceTexture ");
 
     if (!kIsWeb) {
       three3dRender.updateTexture(sourceTexture);
     }
   }
 
-  initRenderer() {
-    Map<String, dynamic> _options = {
+  void initRenderer() {
+    Map<String, dynamic> options = {
       "width": width,
       "height": height,
       "gl": three3dRender.gl,
       "antialias": true,
       "canvas": three3dRender.element
     };
-    renderer = THREE.WebGLRenderer(_options);
+    renderer = three.WebGLRenderer(options);
     renderer!.setPixelRatio(dpr);
     renderer!.setSize(width, height, false);
     renderer!.shadowMap.enabled = true;
 
     if (!kIsWeb) {
-      var pars = THREE.WebGLRenderTargetOptions({
-        "minFilter": THREE.LinearFilter,
-        "magFilter": THREE.LinearFilter,
-        "format": THREE.RGBAFormat
+      final pars = three.WebGLRenderTargetOptions({
+        "minFilter": three.LinearFilter,
+        "magFilter": three.LinearFilter,
+        "format": three.RGBAFormat
       });
-      renderTarget = THREE.WebGLRenderTarget(
+      renderTarget = three.WebGLRenderTarget(
           (width * dpr).toInt(), (height * dpr).toInt(), pars);
       renderTarget.samples = 4;
       renderer!.setRenderTarget(renderTarget);
@@ -217,27 +208,22 @@ class _MyAppState extends State<webgl_loader_fbx> {
     }
   }
 
-  initScene() {
+  void initScene() {
     initRenderer();
     initPage();
   }
 
-  initPage() async {
-    var ASPECT_RATIO = width / height;
+  Future<void> initPage() async {
+    scene = three.Scene();
+    scene.background = three.Color(0xcccccc);
+    scene.fog = three.FogExp2(0xcccccc, 0.002);
 
-    var WIDTH = (width / AMOUNT) * dpr;
-    var HEIGHT = (height / AMOUNT) * dpr;
-
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xcccccc);
-    scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
-
-    camera = new THREE.PerspectiveCamera(60, width / height, 1, 2000);
+    camera = three.PerspectiveCamera(60, width / height, 1, 2000);
     camera.position.set( 100, 200, 300 );
 
     // controls
 
-    controls = new THREE_JSM.OrbitControls(camera, _globalKey);
+    controls = three_jsm.OrbitControls(camera, _globalKey);
 
     controls.enableDamping =
         true; // an animation loop is required when either damping or auto-rotation are enabled
@@ -248,17 +234,17 @@ class _MyAppState extends State<webgl_loader_fbx> {
     controls.minDistance = 100;
     controls.maxDistance = 500;
 
-    controls.maxPolarAngle = THREE.Math.PI / 2;
+    controls.maxPolarAngle = three.Math.pi / 2;
 
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xa0a0a0 );
-    scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
+    scene = three.Scene();
+    scene.background = three.Color( 0xa0a0a0 );
+    scene.fog = three.Fog( 0xa0a0a0, 200, 1000 );
 
-    var hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+    final hemiLight = three.HemisphereLight( 0xffffff, 0x444444 );
     hemiLight.position.set( 0, 200, 0 );
     scene.add( hemiLight );
 
-    var dirLight = new THREE.DirectionalLight( 0xffffff );
+    final dirLight = three.DirectionalLight( 0xffffff );
     dirLight.position.set( 0, 0, 0 );
     dirLight.castShadow = true;
     dirLight.shadow!.camera!.top = 180;
@@ -267,33 +253,16 @@ class _MyAppState extends State<webgl_loader_fbx> {
     dirLight.shadow!.camera!.right = 120;
     camera.add( dirLight );
 
-    // scene.add( new THREE.CameraHelper( dirLight.shadow!.camera ) );
-
-    // ground
-    // var ground = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { "color": 0xFF9999, "depthWrite": false } ) );
-    // ground.rotation.x = - THREE.Math.PI / 2;
-    // ground.receiveShadow = true;
-    // scene.add( ground );
-
-    // var grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000 );
-    // grid.material.opacity = 0.2;
-    // grid.material.transparent = true;
-    // scene.add( grid );
-
     // model
-    var loader = THREE_JSM.FBXLoader(null, width.toInt(), height.toInt());
-    var object = await loader.loadAsync( 'assets/models/fbx/Samba Dancing.fbx');
-    // loader.setPath('assets/models/fbx/');
-    // var object = await loader.loadAsync( 'model.fbx' );
-    mixer = new THREE.AnimationMixer( object );
-
+    final loader = three_jsm.FBXLoader(null, width.toInt(), height.toInt());
+    final object = await loader.loadAsync( 'assets/models/fbx/Samba Dancing.fbx');
+    mixer = three.AnimationMixer( object );
 
     scene.add( object );
-
     animate();
   }
 
-  animate() {
+  void animate() {
     if (!mounted || disposed) {
       return;
     }

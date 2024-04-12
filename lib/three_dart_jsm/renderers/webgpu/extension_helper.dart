@@ -1,19 +1,18 @@
 part of three_webgpu;
 
 extension Matrix4GPU on Matrix4 {
-  @override
-  makePerspective(left, right, top, bottom, near, far) {
-    console.info(
+  Matrix4 makePerspective(num left, num right, num top, num bottom, num near, num far) {
+    Console.info(
         'THREE.WebGPURenderer: Modified Matrix4.makePerspective() and Matrix4.makeOrtographic() to work with WebGPU, see https://github.com/mrdoob/three.js/issues/20276.');
 
-    var te = this.elements;
-    var x = 2 * near / (right - left);
-    var y = 2 * near / (top - bottom);
+    final te = this.elements;
+    final x = 2 * near / (right - left);
+    final y = 2 * near / (top - bottom);
 
-    var a = (right + left) / (right - left);
-    var b = (top + bottom) / (top - bottom);
-    var c = -far / (far - near);
-    var d = -far * near / (far - near);
+    final a = (right + left) / (right - left);
+    final b = (top + bottom) / (top - bottom);
+    final c = -far / (far - near);
+    final d = -far * near / (far - near);
 
     te[0] = x;
     te[4] = 0;
@@ -35,19 +34,18 @@ extension Matrix4GPU on Matrix4 {
     return this;
   }
 
-  @override
-  makeOrthographic(left, right, top, bottom, near, far) {
-    console.info(
+  Matrix4 makeOrthographic(num left, num right, num top, num bottom, num near, num far) {
+    Console.info(
         'THREE.WebGPURenderer: Modified Matrix4.makePerspective() and Matrix4.makeOrtographic() to work with WebGPU, see https://github.com/mrdoob/three.js/issues/20276.');
 
-    var te = this.elements;
-    var w = 1.0 / (right - left);
-    var h = 1.0 / (top - bottom);
-    var p = 1.0 / (far - near);
+    final te = this.elements;
+    final w = 1.0 / (right - left);
+    final h = 1.0 / (top - bottom);
+    final p = 1.0 / (far - near);
 
-    var x = (right + left) * w;
-    var y = (top + bottom) * h;
-    var z = near * p;
+    final x = (right + left) * w;
+    final y = (top + bottom) * h;
+    final z = near * p;
 
     te[0] = 2 * w;
     te[4] = 0;

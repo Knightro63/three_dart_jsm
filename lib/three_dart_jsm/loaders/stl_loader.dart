@@ -1,4 +1,7 @@
-part of jsm_loader;
+import 'dart:async';
+import 'dart:typed_data';
+import 'package:flutter_gl/flutter_gl.dart';
+import 'package:three_dart/three_dart.dart';
 
 /**
  * Description: A THREE loader for STL ASCII files, as created by Solidworks and other CAD programs.
@@ -53,7 +56,7 @@ part of jsm_loader;
 
 
 class STLLoader extends Loader {
-	STLLoader([manager]):super(manager);
+	STLLoader([LoadingManager? manager]):super(manager);
 
   loadAsync(url) async {
     final completer = Completer();
@@ -94,7 +97,7 @@ class STLLoader extends Loader {
     double defaultR = 0;
     double defaultG = 0;
     double defaultB = 0; 
-    double alpha = 0;
+    //double alpha = 0;
 
     // process STL header
     // check for default color in header ("COLOR=rgba" sequence).
@@ -111,7 +114,7 @@ class STLLoader extends Loader {
         defaultR = reader.getUint8( index + 6 ) / 255;
         defaultG = reader.getUint8( index + 7 ) / 255;
         defaultB = reader.getUint8( index + 8 ) / 255;
-        alpha = reader.getUint8( index + 9 ) / 255;
+        //alpha = reader.getUint8( index + 9 ) / 255;
       }
     }
 

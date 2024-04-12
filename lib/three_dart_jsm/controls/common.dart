@@ -1,25 +1,25 @@
 part of jsm_controls;
 
-var _changeEvent = Event({"type": 'change'});
-var _startEvent = Event({'type': 'start'});
-var _endEvent = Event({'type': 'end'});
+final _changeEvent = Event(type: 'change');
+final _startEvent = Event(type: 'start');
+final _endEvent = Event(type: 'end');
 
-var Infinity = Math.Infinity;
+final infinity = Math.infinity;
 
-var _euler = new Euler(0, 0, 0, 'YXZ');
-var _vector = new Vector3();
+final _euler = Euler(0, 0, 0, 'YXZ');
+final _vector = Vector3();
 
-var _lockEvent = Event({'type': 'lock'});
-var _unlockEvent = Event({'type': 'unlock'});
+final _lockEvent = Event(type: 'lock');
+final _unlockEvent = Event(type: 'unlock');
 
-var _PI_2 = Math.PI / 2;
+final _pi2 = Math.pi / 2;
 
-var _raycaster = new Raycaster();
+final _raycaster = Raycaster();
 
-var _plane = new Plane();
+final _plane = Plane();
 
-var _pointer = new Vector2();
-var _offset = new Vector3();
-var _intersection = new Vector3();
-var _worldPosition = new Vector3();
-var _inverseMatrix = new Matrix4();
+final _pointer = Vector2();
+final _offset = Vector3();
+final _intersection = Vector3();
+final _worldPosition = Vector3();
+final _inverseMatrix = Matrix4();

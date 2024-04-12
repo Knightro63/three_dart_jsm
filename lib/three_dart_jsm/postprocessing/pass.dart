@@ -1,4 +1,4 @@
-part of jsm_postprocessing;
+import 'package:three_dart/three_dart.dart';
 
 class Pass {
   // if set to true, the pass is processed by the composer
@@ -22,15 +22,14 @@ class Pass {
 
   Pass() {}
 
-  setProperty(String key, dynamic newValue) {
+  void setProperty(String key, dynamic newValue) {
     // print(" Pass setProperty key: ${key} ");
     this.uniforms[key] = {"value": newValue};
   }
 
-  setSize(int width, int height) {}
+  void setSize(int width, int height) {}
 
-  render(renderer, writeBuffer, readBuffer,
-      {num? deltaTime, bool? maskActive}) {
+  void render(renderer, writeBuffer, readBuffer,{num? deltaTime, bool? maskActive}) {
     throw ('THREE.Pass: .render() must be implemented in derived pass.');
   }
 }
@@ -42,15 +41,15 @@ class Pass {
 // from this module like Pass.
 
 class FullScreenQuad {
-  Camera camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
-  BufferGeometry geometry = new PlaneGeometry(2, 2);
+  Camera camera = OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  BufferGeometry geometry = PlaneGeometry(2, 2);
 
   late Object3D _mesh;
 
   FullScreenQuad(material) {
     geometry.name = "FullScreenQuadGeometry";
 
-    this._mesh = new Mesh(geometry, material);
+    this._mesh = Mesh(geometry, material);
   }
 
   set mesh(value) {
@@ -63,11 +62,11 @@ class FullScreenQuad {
     this._mesh.material = value;
   }
 
-  render(renderer) {
+  void render(renderer) {
     renderer.render(this._mesh, camera);
   }
 
-  dispose() {
+  void dispose() {
     this._mesh.geometry!.dispose();
   }
 }

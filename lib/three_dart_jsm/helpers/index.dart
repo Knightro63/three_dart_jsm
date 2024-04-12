@@ -1,12 +1,6 @@
-library jsm_helpers;
-
-import 'package:flutter_gl/flutter_gl.dart';
-import 'package:three_dart/three_dart.dart';
-
-import '../math/index.dart';
-
-part './VertexNormalsHelper.dart';
-part './VertexTangentsHelper.dart';
-part './RectAreaLightHelper.dart';
-part './octreehelper.dart';
-part './seperate_by_loose_parts.dart';
+export './vertex_normals_helper.dart';
+export './vertex_tangents_helper.dart';
+export './rect_area_light_helper.dart';
+export './octree_helper.dart';
+export './seperate_by_loose_parts.dart';
+export 'light_probe_helper.dart';

@@ -172,7 +172,7 @@ class WebGPURenderPipeline {
     if (type == 'vec4' || type == 'ivec4' || type == 'uvec4')
       return bytesPerElement * 4;
 
-    console.error(
+    Console.error(
         'THREE.WebGPURenderer: Shader variable type not supported yet.', type);
   }
 
@@ -238,7 +238,7 @@ class WebGPURenderPipeline {
         break;
 
       default:
-        console.error(
+        Console.error(
             'THREE.WebGPURenderer: Blending not supported.', blending);
     }
 
@@ -302,7 +302,7 @@ class WebGPURenderPipeline {
       // 	break;
 
       default:
-        console.error(
+        Console.error(
             'THREE.WebGPURenderer: Blend factor not supported.', blend);
     }
 
@@ -334,7 +334,7 @@ class WebGPURenderPipeline {
         break;
 
       default:
-        console.error('THREE.WebGPURenderer: Blend equation not supported.',
+        Console.error('THREE.WebGPURenderer: Blend equation not supported.',
             blendEquation);
     }
 
@@ -389,7 +389,7 @@ class WebGPURenderPipeline {
         break;
 
       default:
-        console.error(
+        Console.error(
             'THREE.WebGPURenderer: Blending not supported.', blending);
     }
 
@@ -444,7 +444,7 @@ class WebGPURenderPipeline {
           break;
 
         default:
-          console.error(
+          Console.error(
               'THREE.WebGPURenderer: Invalid depth function.', depthFunc);
       }
     }
@@ -488,7 +488,7 @@ class WebGPURenderPipeline {
         break;
 
       default:
-        console.error('THREE.WebGPURenderer: Unknown Material.side value.',
+        Console.error('THREE.WebGPURenderer: Unknown Material.side value.',
             material.side);
         break;
     }
@@ -550,7 +550,7 @@ class WebGPURenderPipeline {
         break;
 
       default:
-        console.error(
+        Console.error(
             'THREE.WebGPURenderer: Invalid stencil function.', stencilFunc);
     }
 
@@ -594,7 +594,7 @@ class WebGPURenderPipeline {
         break;
 
       default:
-        console.error('THREE.WebGPURenderer: Invalid stencil operation.',
+        Console.error('THREE.WebGPURenderer: Invalid stencil operation.',
             stencilOperation);
     }
 
@@ -676,7 +676,7 @@ class WebGPURenderPipeline {
       }
     }
 
-    console.error(
+    Console.error(
         'THREE.WebGPURenderer: Shader variable type not supported yet.', type);
   }
 

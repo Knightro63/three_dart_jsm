@@ -43,7 +43,7 @@ class FirstPersonControls with EventDispatcher {
 
 	bool constrainVertical = false;
 	double verticalMin = 0;
-	double verticalMax = Math.PI;
+	double verticalMax = Math.pi;
 
 	// internals
 
@@ -222,7 +222,7 @@ class FirstPersonControls with EventDispatcher {
 
       if ( this.constrainVertical ) {
 
-        verticalLookRatio = Math.PI / ( this.verticalMax - this.verticalMin );
+        verticalLookRatio = Math.pi / ( this.verticalMax - this.verticalMin );
 
       }
 
@@ -236,7 +236,7 @@ class FirstPersonControls with EventDispatcher {
 
       if ( this.constrainVertical ) {
 
-        phi = MathUtils.mapLinear( phi, 0, Math.PI, this.verticalMin, this.verticalMax );
+        phi = MathUtils.mapLinear( phi, 0, Math.pi, this.verticalMin, this.verticalMax );
 
       }
 
@@ -278,7 +278,7 @@ class FirstPersonControls with EventDispatcher {
 
   //     if ( this.constrainVertical ) {
 
-  //       verticalLookRatio = Math.PI / ( this.verticalMax - this.verticalMin );
+  //       verticalLookRatio = Math.pi / ( this.verticalMax - this.verticalMin );
 
   //     }
 
@@ -292,7 +292,7 @@ class FirstPersonControls with EventDispatcher {
 
   //     if ( this.constrainVertical ) {
 
-  //       phi = MathUtils.mapLinear( phi, 0, Math.PI, this.verticalMin, this.verticalMax );
+  //       phi = MathUtils.mapLinear( phi, 0, Math.pi, this.verticalMin, this.verticalMax );
 
   //     }
 

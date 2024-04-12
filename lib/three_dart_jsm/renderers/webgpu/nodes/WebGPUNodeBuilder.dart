@@ -49,15 +49,12 @@ fn inversesqrt( x : f32 ) -> f32 {
 
 class WebGPUNodeBuilder extends NodeBuilder {
   late Map uniformsGroup;
-  late dynamic lightNode;
+  late Node? lightNode;
 
   late Map bindings;
   late Map bindingsOffset;
 
-  WebGPUNodeBuilder(object, renderer, [lightNode = null])
-      : super(object, renderer, null) {
-    this.lightNode = lightNode;
-
+  WebGPUNodeBuilder(Object3D object, renderer, [this.lightNode = null]):super(object, renderer, null) {
     this.bindings = {"vertex": [], "fragment": []};
     this.bindingsOffset = {"vertex": 0, "fragment": 0};
 

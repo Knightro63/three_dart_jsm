@@ -15,6 +15,15 @@
 *.ipr
 *.iws
 .idea/
+*.lock
+
+*/macos
+*/windows
+*/web
+*/test
+*/linux
+*/ios
+*/android
 
 # Visual Studio Code related
 .classpath

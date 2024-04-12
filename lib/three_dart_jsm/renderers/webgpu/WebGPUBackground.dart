@@ -1,7 +1,7 @@
 part of three_webgpu;
 
-var _clearAlpha;
-var _clearColor = new Color();
+int _clearAlpha = 0;
+final _clearColor = Color();
 
 class WebGPUBackground {
   late WebGPURenderer renderer;
@@ -13,14 +13,14 @@ class WebGPUBackground {
     this.forceClear = false;
   }
 
-  clear() {
+  void clear() {
     this.forceClear = true;
   }
 
-  update(scene) {
-    var renderer = this.renderer;
-    var background = (scene is Scene) ? scene.background : null;
-    var forceClear = this.forceClear;
+  void update(Scene scene) {
+    final renderer = this.renderer;
+    final background = scene.background;
+    bool forceClear = this.forceClear;
 
     if (background == null) {
       // no background settings, use clear color configuration from the renderer
@@ -34,16 +34,16 @@ class WebGPUBackground {
       _clearAlpha = 1;
       forceClear = true;
     } else {
-      console.error(
+      Console.error(
           'THREE.WebGPURenderer: Unsupported background configuration.',
           background);
     }
 
     // configure render pass descriptor
 
-    var renderPassDescriptor = renderer._renderPassDescriptor;
-    var colorAttachment = renderPassDescriptor.colorAttachments;
-    var depthStencilAttachment = renderPassDescriptor.depthStencilAttachment;
+    final renderPassDescriptor = renderer._renderPassDescriptor;
+    final colorAttachment = renderPassDescriptor.colorAttachments;
+    final depthStencilAttachment = renderPassDescriptor.depthStencilAttachment;
 
     if (renderer.autoClear == true || forceClear == true) {
       if (renderer.autoClearColor == true) {
